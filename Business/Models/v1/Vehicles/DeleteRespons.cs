@@ -1,4 +1,4 @@
-﻿namespace Business.Models.v1
+﻿namespace Business.Models.v1.Vehicles
 {
     using Persistence.Entities.v1;
 

@@ -1,4 +1,6 @@
-﻿namespace Business.Models.v1
+﻿using Business.Models.v1.Vehicles;
+
+namespace Business.Models.v1.Towns
 {
     public class TownResponse
     {
@@ -6,7 +8,7 @@
 
         public string Postcode { get; set; }
 
-        public int CarsCount => this.Vehicles.Count();
+        public int CarsCount => Vehicles.Count();
 
         public IEnumerable<VehicleResponse> Vehicles { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿using Business.Interfaces.v1;
-using Business.Models.v1;
+using Business.Models.v1.Towns;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Vehicles.Web.Controllers

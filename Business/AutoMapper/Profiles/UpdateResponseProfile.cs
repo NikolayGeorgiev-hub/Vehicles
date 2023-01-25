@@ -1,6 +1,6 @@
-﻿using Business.Models.v1;
-using Persistence.Entities.v1;
+﻿using Persistence.Entities.v1;
 using AutoMapper;
+using Business.Models.v1.Vehicles;
 
 namespace Business.AutoMapper.Profiles
 {

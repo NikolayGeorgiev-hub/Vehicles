@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+﻿using Business.Models.v1.Roles;
+using Business.Models.v1.Users;
 
 namespace Business.Interfaces.v1
 {
     public interface IUserService
     {
-        Task CreateUserAsync();
+        Task<UserResponese> CreateUserAsync(UserRegistrationRequest requestUser);
 
-        Task CreateNewRoleAsync(string roleName);
+        Task<RoleResponse> CreateNewRoleAsync(RoleRequest requestRole);
 
-        Task SetUserRoleAsync(string userId, string roleName);
+        Task<AddToRoleResponse> SetUserRoleAsync(AddToRoleRequest roleRequest);
 
-        Task<bool> SignInAsync(string userId);
-
-        Task<string> SignOutAsync(string userId);
+        Task<UserResponese> SignInAsync(UserLoginRequest loginRequest);
     }
 }

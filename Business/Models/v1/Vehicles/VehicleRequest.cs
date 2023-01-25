@@ -1,8 +1,9 @@
 ﻿using Persistence.Entities.v1;
 using System.ComponentModel.DataAnnotations;
-using static Business.Constants;
 
-namespace Business.Models.v1
+using static Business.Constants.ValidationMessage;
+
+namespace Business.Models.v1.Vehicles
 {
     public class VehicleRequest
     {
@@ -27,7 +28,7 @@ namespace Business.Models.v1
 
         [Display(Name = "Purpose")]
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [EnumDataType(typeof(Purpose),ErrorMessage = EnumTypeErrorMessage)]
+        [EnumDataType(typeof(Purpose), ErrorMessage = EnumTypeErrorMessage)]
         public Purpose Purpose { get; set; }
 
     }

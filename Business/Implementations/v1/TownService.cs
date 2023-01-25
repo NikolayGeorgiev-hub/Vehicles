@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Business.Interfaces.v1;
-using Business.Models.v1;
+using Business.Models.v1.Towns;
 using Persistence.Interfaces.v1;
 
 namespace Business.Implementations.v1

@@ -1,11 +1,11 @@
 ﻿using Vehicles.Data.Interfaces.v1;
 using AutoMapper;
-using Business.Models.v1;
 using Business.Interfaces.v1;
 using Persistence.Entities.v1;
 using Persistence.Interfaces.v1;
+using Business.Models.v1.Vehicles;
 
-using static Business.Constants;
+using static Business.Constants.ValidationMessage;
 
 namespace Business.Implementations.v1
 {

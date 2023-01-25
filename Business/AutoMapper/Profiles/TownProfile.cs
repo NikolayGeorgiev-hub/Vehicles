@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Business.Models.v1;
+using Business.Models.v1.Towns;
+using Business.Models.v1.Vehicles;
 using Persistence.Entities.v1;
 
 namespace Business.AutoMapper.Profiles

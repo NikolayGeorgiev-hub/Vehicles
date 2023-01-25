@@ -1,4 +1,4 @@
-﻿using Business.Models.v1;
+﻿using Business.Models.v1.Towns;
 
 namespace Business.Interfaces.v1
 {

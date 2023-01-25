@@ -7,10 +7,6 @@ using Persistence.Implementations.v1;
 using Persistence.Context.v1;
 using Persistence.Interfaces.v1;
 using Persistence.Entities.v1;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 public class Program
 {
@@ -31,27 +27,8 @@ public class Program
             options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-               .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>()
-               .AddDefaultTokenProviders();
+               .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.SaveToken = true;
-            options.RequireHttpsMetadata = false;
-            options.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidAudience = configuration["JWT:ValidAudience"],
-                ValidIssuer = configuration["JWT:ValidIssuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
-            };
-        });
 
 
         services.AddSingleton(configuration);
@@ -69,6 +46,7 @@ public class Program
         services.AddScoped<IVehicleService, VehicleService>();
         services.AddScoped<ITownService, TownService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IValidationService, ValidationService>();
     }
 
     private static void Configure(WebApplication app)

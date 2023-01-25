@@ -1,10 +1,7 @@
 ﻿using Business.Interfaces.v1;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+using Business.Models.v1.Roles;
+using Business.Models.v1.Users;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Entities.v1;
-using System.Linq.Expressions;
-using System.Security.Claims;
 
 using static Business.Constants;
 
@@ -23,18 +20,22 @@ namespace Vehicles.Web.Controllers
             _logger = logger;
         }
 
-        [HttpPost]
-        public async Task AddNewUserAsync()
-        {
-            await _userService.CreateUserAsync();
-        }
-
-        [HttpPost("{roleName}")]
-        public async Task AddRoleAsync(string roleName)
+        [HttpPost("CreateUser")]
+        public async Task<UserResponese> AddNewUserAsync(UserRegistrationRequest requestUser)
         {
             try
             {
-                await _userService.CreateNewRoleAsync(roleName);
+                var response = await _userService.CreateUserAsync(requestUser);
+                if (response.IsSucceeded)
+                {
+                    _logger.Log(LogLevel.Information, string.Format(LoginMessage.SuccessfulRegistration, response.Email));
+                    return response;
+                }
+
+                _logger.Log(LogLevel.Information, $"Status code: {response.Error.StatusCode}, Error: {response.Error.Description}");
+                return response;
+
+
             }
             catch (Exception ex)
             {
@@ -43,12 +44,21 @@ namespace Vehicles.Web.Controllers
             }
         }
 
-        [HttpPost("{userId}/{roleName}")]
-        public async Task SetUserRole(string userId, string roleName)
+        [HttpPost("CreateRole")]
+        public async Task<RoleResponse> AddRoleAsync(RoleRequest requestRole)
         {
             try
             {
-                await _userService.SetUserRoleAsync(userId, roleName);
+                var response = await _userService.CreateNewRoleAsync(requestRole);
+                if (response.IsSucceeded)
+                {
+                    _logger.Log(LogLevel.Information, string.Format(LoginMessage.SuccessfulAddRole, response.RoleName));
+                    return response;
+                }
+
+                _logger.Log(LogLevel.Information, response.Error.Description);
+                return response;
+
             }
             catch (Exception ex)
             {
@@ -57,15 +67,20 @@ namespace Vehicles.Web.Controllers
             }
         }
 
-        [HttpGet("logIn/{userId}")]
-        public async Task LogInAsync(string userId)
+        [HttpPost("SetRole")]
+        public async Task<AddToRoleResponse> SetUserRole(AddToRoleRequest roleRequest)
         {
             try
             {
-                var result = await _userService.SignInAsync(userId);
-                var message = string.Format(LoginMessage.Login, result is true ? "Succeeded" : "Not Succeeded");
+                var response = await _userService.SetUserRoleAsync(roleRequest);
+                if (response.IsSucceeded)
+                {
+                    _logger.Log(LogLevel.Information, string.Format(LoginMessage.SuccessfulSetToRole), response.RoleName, response.UserName);
+                    return response;
+                }
 
-                _logger.Log(LogLevel.Information, message);
+                _logger.Log(LogLevel.Information, response.Error.Description);
+                return response;
             }
             catch (Exception ex)
             {
@@ -74,21 +89,27 @@ namespace Vehicles.Web.Controllers
             }
         }
 
-        [HttpGet("logOut/{userId}")]
-        public async Task LogOutAsync(string userId)
+        [HttpPost("logIn")]
+        public async Task<UserResponese> LogInAsync(UserLoginRequest loginRequest)
         {
-
             try
             {
-                string userName = await _userService.SignOutAsync(userId);
-                _logger.Log(LogLevel.Information, string.Format(LoginMessage.Logount, userName));
+                var response = await _userService.SignInAsync(loginRequest);
+                if (response.IsSucceeded)
+                {
+                    _logger.Log(LogLevel.Information, string.Format(LoginMessage.Login, response.Email));
+                    return response;
+                }
+
+                _logger.Log(LogLevel.Information, response.Error.Description);
+                return response;
+
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
-
     }
 }
