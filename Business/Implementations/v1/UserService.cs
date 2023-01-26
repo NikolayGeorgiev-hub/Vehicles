@@ -4,10 +4,13 @@ using Business.Models.v1.Roles;
 using Business.Models.v1.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Persistence.Entities.v1;
+using Persistence.Interfaces.v1;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
-
+using System.Text;
 using static Business.Constants;
 
 namespace Business.Implementations.v1;
@@ -17,8 +20,8 @@ public class UserService : IUserService
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IValidationService _validationService;
-    
+    private readonly IUserRepository _userRepository;
+    private readonly IConfiguration _configuration;
 
     public IdentityResult IdentityResult { get; set; }
 
@@ -26,20 +29,24 @@ public class UserService : IUserService
         RoleManager<ApplicationRole> roleManager,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        IValidationService validationService)
+        IUserRepository userRepository,
+        IConfiguration configuration)
+
     {
         _roleManager = roleManager;
         _userManager = userManager;
         _signInManager = signInManager;
-        _validationService = validationService;
+        _userRepository = userRepository;
+        _configuration = configuration;
     }
 
     public async Task<UserResponese> CreateUserAsync(UserRegistrationRequest registrationRequest)
     {
         IdentityResult result = new IdentityResult();
         var response = new UserResponese();
+        var existingEmail = await _userRepository.ExistingEmailAsync(registrationRequest.Email);
 
-        if (_validationService.ExistingEmail(registrationRequest.Email))
+        if (existingEmail)
         {
             result = IdentityResult.Failed(new
             IdentityError
@@ -124,7 +131,7 @@ public class UserService : IUserService
 
     public async Task<AddToRoleResponse> SetUserRoleAsync(AddToRoleRequest roleRequest)
     {
-        var user = await _validationService.GetUserAsync(roleRequest.UserId);
+        var user = await _userRepository.FindeByIdAsync(roleRequest.UserId);
         var response = new AddToRoleResponse();
 
         if (user is null)
@@ -237,15 +244,47 @@ public class UserService : IUserService
             return response;
         }
 
-        var claims = await this.AddClaimsAsync(user);
+        var token = await this.GenerateJSONWebToken(user);
         response = new UserResponese
         {
-            IsSignedIn = _signInManager.IsSignedIn(claims),
+            IsSignedIn = token is not null ? true : false,
             Email = user.Email,
-            IsSucceeded= true,
+            IsSucceeded = true,
+            Token = token,
         };
 
         return response;
+    }
+
+    private async Task<string> GenerateJSONWebToken(ApplicationUser userInfo)
+    {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+               new Claim("id", userInfo.Id.ToString()),
+               new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
+               new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
+
+            }.ToList();
+
+        //get user roles
+        //var roles = await _userRepository.GetUserRolesAsync(userInfo.Id);
+        //foreach (var role in roles)
+        //{
+        //    claims.Add(new Claim(role.Name, role.Name));
+        //}
+
+
+        var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+          _configuration["Jwt:Issuer"],
+          claims,
+          null,
+          expires: DateTime.Now.AddMinutes(120),
+          signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     private string GetErrorDescription(IdentityResult result)

@@ -1,6 +1,7 @@
 ﻿using Business.Interfaces.v1;
 using Business.Models.v1.Roles;
 using Business.Models.v1.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using static Business.Constants;
@@ -111,5 +112,6 @@ namespace Vehicles.Web.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        
     }
 }
