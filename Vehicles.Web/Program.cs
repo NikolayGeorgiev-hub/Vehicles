@@ -95,6 +95,7 @@ public class Program
         services.AddScoped<IVehicleService, VehicleService>();
         services.AddScoped<ITownService, TownService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IInsuaranceService, InsuranceService>();
     }
 
     private static void Configure(WebApplication app)

@@ -1,0 +1,109 @@
+﻿using Business.Interfaces.v1;
+using Persistence.Entities.v1;
+
+namespace Business.Implementations.v1
+{
+    public class InsuranceService : IInsuaranceService
+    {
+        public InsurancePolicy Create(Vehicle vehicle)
+        {
+            var engineCategory = this.CreateEngineCategory(vehicle.EngineCapacity, vehicle.VehicleType);
+
+            var insuarance = new InsurancePolicy
+            {
+                Number = this.CreateRandomNUmber(),
+                CreatedOn = DateTime.Now,
+                ExpiresOn = DateTime.Now.AddYears(1),
+                TownId = vehicle.TownId,
+                Town = vehicle.Town.Name,
+                Type = vehicle.VehicleType.Type,
+                Purpose = vehicle.Purpose.ToString(),
+                EngineType = engineCategory.Description,
+                EngineGroup = engineCategory.Group,
+                OwnerAge = 55,
+                OwnerGroup = this.CreateOwnerCategory(55).OwnerGroup
+
+            };
+
+           return insuarance;
+
+
+        }
+
+        private string CreateRandomNUmber()
+        {
+            Random generator = new Random();
+            string policyNumber = "380003562";
+            policyNumber += generator.Next(0, 0000000).ToString("D" + (13 - policyNumber.Length).ToString());
+
+            return policyNumber;
+        }
+
+        private EngineCategory CreateEngineCategory(int engineCapacity, VehicleType vehicleType)
+        {
+            var engineCategory = new EngineCategory();
+
+            if (engineCapacity > 1500 && engineCapacity <= 2000)
+            {
+                engineCategory.Description = $"{vehicleType.Type} over 1500 to 2000";
+                engineCategory.Group = EngineGroup.Medium;
+
+            }
+
+            if (engineCapacity <= 1500)
+            {
+                engineCategory.Description = $"{vehicleType.Type} to 1500";
+                engineCategory.Group = EngineGroup.Small;
+            }
+
+            if (engineCapacity > 2000)
+            {
+                engineCategory.Description = $"{vehicleType.Type} over 2000";
+                engineCategory.Group = EngineGroup.Large;
+
+            }
+
+            return engineCategory;
+        }
+
+        private OwnerCategory CreateOwnerCategory(int? ownerAge)
+        {
+            var ownerCategory = new OwnerCategory();
+
+            if (ownerAge is null)
+            {
+                ownerCategory.OwnerGroup = OwnerGroup.None;
+                return ownerCategory;
+            }
+
+            if (ownerAge > 18 && ownerAge <= 25)
+            {
+                ownerCategory.OwnerGroup = OwnerGroup.First;
+            }
+
+            if (ownerAge > 25 && ownerAge <= 50)
+            {
+                ownerCategory.OwnerGroup = OwnerGroup.Second;
+            }
+
+            if (ownerAge > 50)
+            {
+                ownerCategory.OwnerGroup = OwnerGroup.Third;
+            }
+
+            return ownerCategory;
+        }
+    }
+
+    public class EngineCategory
+    {
+        public string Description { get; set; }
+
+        public EngineGroup Group { get; set; }
+    }
+
+    public class OwnerCategory
+    {
+        public OwnerGroup OwnerGroup { get; set; }
+    }
+}

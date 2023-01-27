@@ -19,11 +19,14 @@ namespace Persistence.Context.v1
 
         public DbSet<VehicleType> VehicleTypes { get; set; }
 
+        public DbSet<InsurancePolicy> Insuarances { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            VehicleConfiguration(modelBuilder.Entity<Vehicle>());
-            TownConfiguration(modelBuilder.Entity<Town>());
-            VehicleTypeConfiguration(modelBuilder.Entity<VehicleType>());
+           this.VehicleConfiguration(modelBuilder.Entity<Vehicle>());
+           this.TownConfiguration(modelBuilder.Entity<Town>());
+           this.VehicleTypeConfiguration(modelBuilder.Entity<VehicleType>());
+           this.InsuranceConfiguration(modelBuilder.Entity<InsurancePolicy>());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -91,6 +94,47 @@ namespace Persistence.Context.v1
                 .Property(x => x.Type)
                 .IsRequired()
                 .HasMaxLength(30)
+                .IsUnicode();
+        }
+
+        private void InsuranceConfiguration(EntityTypeBuilder<InsurancePolicy> insuarance)
+        {
+            insuarance
+                .HasKey(x => x.Id);
+
+            insuarance
+                .Property(x => x.Number)
+                .IsRequired()
+                .HasMaxLength(14);
+
+            insuarance
+                .Property(x => x.TownId)
+                .IsRequired();
+
+            insuarance
+                .Property(x => x.Type)
+                .IsRequired()
+                .HasMaxLength(300)
+                .IsUnicode();
+
+            insuarance
+                .Property(x => x.Purpose)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsRequired();
+
+            insuarance
+                .Property(x => x.OwnerGroup)
+                .IsRequired();
+
+            insuarance
+                .Property(x => x.EngineGroup)
+                .IsRequired();
+
+            insuarance
+                .Property(x => x.EngineType)
+                .IsRequired()
+                .HasMaxLength(300)
                 .IsUnicode();
         }
 
