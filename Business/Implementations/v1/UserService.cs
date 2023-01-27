@@ -44,6 +44,7 @@ public class UserService : IUserService
     {
         IdentityResult result = new IdentityResult();
         var response = new UserResponese();
+
         var existingEmail = await _userRepository.ExistingEmailAsync(registrationRequest.Email);
 
         if (existingEmail)
@@ -100,7 +101,7 @@ public class UserService : IUserService
     public async Task<RoleResponse> CreateNewRoleAsync(RoleRequest requestRole)
     {
         IdentityResult result = await _roleManager
-            .CreateAsync(new ApplicationRole(requestRole.RoleName.ToLower()));
+            .CreateAsync(new ApplicationRole(requestRole.RoleName));
 
         var response = new RoleResponse();
 
@@ -224,6 +225,7 @@ public class UserService : IUserService
 
             return response;
         }
+
         SignInResult result = await _signInManager
             .PasswordSignInAsync(user, loginRequest.Password, false, false);
 
@@ -263,18 +265,13 @@ public class UserService : IUserService
 
         var claims = new[]
         {
-               new Claim("id", userInfo.Id.ToString()),
-               new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
-               new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
+           new Claim(JwtRegisteredClaimNames.Sub, userInfo.Id.ToString()),
+           new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
+          
+        }.ToList();
 
-            }.ToList();
-
-        //get user roles
-        //var roles = await _userRepository.GetUserRolesAsync(userInfo.Id);
-        //foreach (var role in roles)
-        //{
-        //    claims.Add(new Claim(role.Name, role.Name));
-        //}
+        var roles = await _userManager.GetRolesAsync(userInfo);
+        claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
 
 
         var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
@@ -293,11 +290,4 @@ public class UserService : IUserService
         return description;
     }
 
-    private async Task<ClaimsPrincipal> AddClaimsAsync(ApplicationUser user)
-    {
-        var claimsFactory = _signInManager.ClaimsFactory;
-        ClaimsPrincipal claimsPrincipal = await claimsFactory.CreateAsync(user);
-
-        return claimsPrincipal;
-    }
 }

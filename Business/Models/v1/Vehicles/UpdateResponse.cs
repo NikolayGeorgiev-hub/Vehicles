@@ -1,11 +1,7 @@
 ﻿namespace Business.Models.v1.Vehicles
 {
-    public class UpdateResponse
+    public class UpdateResponse : BaseResponse
     {
-        public bool IsUpdated { get; set; }
-
-        public string Reason { get; set; }
-
         public int EngineCapacity { get; init; }
 
         public int VehicleAge { get; init; }

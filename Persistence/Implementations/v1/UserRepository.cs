@@ -33,11 +33,6 @@ namespace Persistence.Implementations.v1
             return user;
         }
 
-        public async Task<IList<ApplicationRole>> GetUserRolesAsync(Guid id)
-        {
-            return null;
-        }
-
         public async Task<bool> ExistingUserAsync(Guid id)
         {
             var result = await _applicationDbContext.Users

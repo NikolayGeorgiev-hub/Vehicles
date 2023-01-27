@@ -1,9 +1,11 @@
 ﻿using Business.Interfaces.v1;
 using Business.Models.v1.Roles;
 using Business.Models.v1.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Persistence.Entities.v1;
 using static Business.Constants;
 
 namespace Vehicles.Web.Controllers
@@ -15,7 +17,9 @@ namespace Vehicles.Web.Controllers
         private readonly IUserService _userService;
         private readonly ILogger<IUserService> _logger;
 
-        public UsersController(IUserService userService, ILogger<IUserService> logger)
+        public UsersController(
+            IUserService userService,
+            ILogger<IUserService> logger)
         {
             _userService = userService;
             _logger = logger;
@@ -46,6 +50,7 @@ namespace Vehicles.Web.Controllers
         }
 
         [HttpPost("CreateRole")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = ApplicationRoles.AdminRoleName)]
         public async Task<RoleResponse> AddRoleAsync(RoleRequest requestRole)
         {
             try
@@ -69,6 +74,7 @@ namespace Vehicles.Web.Controllers
         }
 
         [HttpPost("SetRole")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = ApplicationRoles.AdminRoleName)]
         public async Task<AddToRoleResponse> SetUserRole(AddToRoleRequest roleRequest)
         {
             try
@@ -76,7 +82,7 @@ namespace Vehicles.Web.Controllers
                 var response = await _userService.SetUserRoleAsync(roleRequest);
                 if (response.IsSucceeded)
                 {
-                    _logger.Log(LogLevel.Information, string.Format(LoginMessage.SuccessfulSetToRole), response.RoleName, response.UserName);
+                    _logger.Log(LogLevel.Information, string.Format(LoginMessage.SuccessfulSetToRole,response.RoleName,response.UserName));
                     return response;
                 }
 
@@ -112,6 +118,6 @@ namespace Vehicles.Web.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        
+
     }
 }

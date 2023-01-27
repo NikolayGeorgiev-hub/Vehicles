@@ -4,21 +4,20 @@ namespace Business.Interfaces.v1
 {
     public interface IVehicleService
     {
-        Task<VehicleResponse> GetByIdAsync(Guid id);
-        
-        Task<VehicleResponse> ThrowException();
+        Task<VehicleResponse> CreateAsync(VehicleRequest model, Guid ownerId);
+
+        Task<UpdateResponse> UpdateAsync(Guid vehicleId, Guid ownerId, VehicleRequest model);
+
+        Task<DeleteRespons> DeleteAsync(Guid id,Guid ownerId);
 
         Task<IList<VehicleResponse>> GetAllAsync();
 
-        Task<VehicleResponse> CreateAsync(VehicleRequest model);
+        Task<VehicleResponse> GetByIdAsync(Guid id);
 
         Task<IList<VehicleResponse>> GetVehiclesInRangeAsync(int min, int max);
 
-
-        Task<UpdateResponse> UpdateAsync(Guid id, VehicleRequest model);
-
         Task<IList<VehicleResponse>> GetByTownAsync(string townName);
 
-        Task<DeleteRespons> DeleteAsync(Guid id);
+        Task<VehicleResponse> ThrowException();
     }
 }

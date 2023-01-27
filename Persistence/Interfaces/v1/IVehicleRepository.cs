@@ -12,6 +12,8 @@ namespace Vehicles.Data.Interfaces.v1
 
         Task<Vehicle?> GetByIdAsync(Guid id);
 
+        Task UpdateByIdAsync(Guid id);
+
         Vehicle Update(Vehicle entity);
 
         Task DeleteByIdAsync(Guid id);
@@ -19,5 +21,7 @@ namespace Vehicles.Data.Interfaces.v1
         void Delete(Vehicle entity);
 
         Task<bool> SaveChangesAsync();
+
+        Task<bool> IsValidVehicleTypeAsync(Guid typeId);
     }
 }

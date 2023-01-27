@@ -2,16 +2,19 @@
 {
     public class Constants
     {
+        public class ApplicationRoles
+        {
+            public const string OwnerRoleName = "Owner";
+            public const string AdminRoleName = "Administrator";
+        }
+
+
         public class ValidationMessage
         {
             public const string RequiredErrorMessage = "{0} is required";
             public const string RangeErrorMessage = "{0} must by between {1} - {2}";
             public const string EnumTypeErrorMessage = "Not supported type";
             public const string InvalidEmailErrorMessage = "Not valid email";
-
-            public const string NotFoundVehicle = "Not found vehicle";
-            public const string SuccessfulRemove = "Successful remove";
-            public const string SuccessfulUpdate = "Successful update";
         }
 
         public class LoginMessage
@@ -34,5 +37,22 @@
             public const string FailedLogin = "Wrong username or password";
         }
 
+
+        public class LoggerMessages
+        {
+            public const string SuccessfulAddNewVehicle = "Successful add new vehicle Type: {0}";
+            public const string NotFound = "Not found {0} ";
+            public const string ForbiddenAction = "Forbidden {0}, difernet user";
+
+
+            public const string SuccessfulRemove = "Successful remove";
+            public const string SuccessfulUpdate = "Successful update";
+        }
+
+        public class VehicleMessages
+        {
+            public const string NotFound = "Not found vehicle with this ID: {0}";
+            public const string Forbidden = "You cannot change the data of someone elses vehicle";
+        }
     }
 }

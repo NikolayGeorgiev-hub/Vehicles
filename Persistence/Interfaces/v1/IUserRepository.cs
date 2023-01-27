@@ -8,8 +8,6 @@ namespace Persistence.Interfaces.v1
 
         Task<ApplicationUser> FindeByIdAsync(Guid id);
 
-        Task<IList<ApplicationRole>> GetUserRolesAsync(Guid id);
-
         Task<bool> ExistingUserAsync(Guid id);
 
         Task<bool> ExistingEmailAsync(string email);

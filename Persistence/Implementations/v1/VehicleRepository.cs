@@ -38,6 +38,7 @@ namespace Persistence.Implementations.v1
             return await _dbContext.Vehicles
                 .Include(x => x.Town)
                 .Include(x => x.VehicleType)
+                .Include(x => x.Owner)
                 .ToListAsync();
         }
 
@@ -46,7 +47,17 @@ namespace Persistence.Implementations.v1
             return _dbContext.Vehicles
                 .Include(x => x.VehicleType)
                 .Include(x => x.Town)
+                .Include(x => x.Owner)
                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task UpdateByIdAsync(Guid id)
+        {
+            Vehicle? vehicle = await this.GetByIdAsync(id);
+            if (vehicle is not null)
+            {
+                Update(vehicle);
+            }
         }
 
         public Vehicle Update(Vehicle entity)
@@ -60,6 +71,12 @@ namespace Persistence.Implementations.v1
             var result = await _dbContext.SaveChangesAsync();
             return result == 1 ? true : false;
 
+        }
+
+        public async Task<bool> IsValidVehicleTypeAsync(Guid typeId)
+        {
+            var result = await _dbContext.VehicleTypes.AnyAsync(x => x.Id == typeId);
+            return result;
         }
 
         public IQueryable<Vehicle> VehicleQuery()

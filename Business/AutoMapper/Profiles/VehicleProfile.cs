@@ -11,8 +11,10 @@ namespace Business.AutoMapper.Profiles
             CreateMap<Vehicle, VehicleResponse>()
                 .ForMember(v => v.Town, opt
                     => opt.MapFrom(t => $"{t.Town.Name} {t.Town.Postcode}"))
-                .ForMember(x => x.Purpose, opt 
-                    => opt.MapFrom(x => $"{x.Purpose} - {x.VehicleType.Type}"));
+                .ForMember(x => x.Purpose, opt
+                    => opt.MapFrom(x => $"{x.Purpose} - {x.VehicleType.Type}"))
+                .ForMember(x => x.OwnerEmail, opt 
+                    => opt.MapFrom(x => x.Owner.Email));
 
         }
 
