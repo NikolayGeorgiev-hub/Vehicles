@@ -3,9 +3,8 @@ using Business.Models.v1.Roles;
 using Business.Models.v1.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Entities.v1;
+
 using static Business.Constants;
 
 namespace Vehicles.Web.Controllers

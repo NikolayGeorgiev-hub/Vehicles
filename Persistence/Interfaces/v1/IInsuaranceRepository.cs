@@ -1,4 +1,4 @@
-﻿using Persistence.Entities.v1;
+﻿using Persistence.Entities.v1.Insurances;
 
 namespace Persistence.Interfaces.v1
 {

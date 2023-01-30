@@ -1,5 +1,5 @@
 ﻿using Persistence.Context.v1;
-using Persistence.Entities.v1;
+using Persistence.Entities.v1.Insurances;
 using Persistence.Interfaces.v1;
 
 namespace Persistence.Implementations.v1

@@ -1,6 +1,7 @@
 ﻿using Business.Interfaces.v1;
 using Microsoft.Extensions.Logging;
-using Persistence.Entities.v1;
+using Persistence.Entities.v1.Insurances;
+using Persistence.Entities.v1.Vehicles;
 using Persistence.Interfaces.v1;
 using Vehicles.Data.Interfaces.v1;
 

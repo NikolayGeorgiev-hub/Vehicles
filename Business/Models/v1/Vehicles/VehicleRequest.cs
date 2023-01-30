@@ -1,4 +1,4 @@
-﻿using Persistence.Entities.v1;
+﻿using Persistence.Entities.v1.Vehicles;
 using System.ComponentModel.DataAnnotations;
 
 using static Business.Constants.ValidationMessage;

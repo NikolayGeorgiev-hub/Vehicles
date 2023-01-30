@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Persistence.Context.v1;
-using Persistence.Entities.v1;
+using Persistence.Entities.v1.Vehicles;
 using Vehicles.Data.Interfaces.v1;
 
 namespace Persistence.Implementations.v1

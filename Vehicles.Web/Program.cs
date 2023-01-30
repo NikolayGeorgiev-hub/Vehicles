@@ -6,13 +6,14 @@ using Business.Implementations.v1;
 using Persistence.Implementations.v1;
 using Persistence.Context.v1;
 using Persistence.Interfaces.v1;
-using Persistence.Entities.v1;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Vehicles.Web;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Business.Models.v1.Errors;
+using Persistence.Entities.v1.Users;
 
 public class Program
 {
@@ -108,11 +109,12 @@ public class Program
         {
             app.UseDeveloperExceptionPage();
         }
+        
        
         app.UseHttpsRedirection();
         app.UseRouting();
         app.UseAuthorization();
-
+        app.UseMiddleware<ErrorHandlerMiddleware>();
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

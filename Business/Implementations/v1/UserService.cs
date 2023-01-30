@@ -5,7 +5,7 @@ using Business.Models.v1.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Persistence.Entities.v1;
+using Persistence.Entities.v1.Users;
 using Persistence.Interfaces.v1;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;

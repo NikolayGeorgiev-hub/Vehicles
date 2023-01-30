@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using Persistence.Entities.v1;
 
 using static Business.Constants;
+using Persistence.Entities.v1.Users;
 
 namespace Vehicles.Web.Controllers
 {

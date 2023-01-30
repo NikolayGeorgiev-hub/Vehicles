@@ -1,4 +1,6 @@
-﻿namespace Persistence.Entities.v1
+﻿using Persistence.Entities.v1.Vehicles;
+
+namespace Persistence.Entities.v1.Towns
 {
     public class Town : BaseEntity
     {

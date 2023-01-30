@@ -1,4 +1,4 @@
-﻿using Persistence.Entities.v1;
+﻿using Persistence.Entities.v1.Towns;
 using System.Threading.Tasks;
 
 namespace Persistence.Interfaces.v1

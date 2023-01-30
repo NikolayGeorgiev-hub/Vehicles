@@ -1,7 +1,6 @@
 ﻿using Vehicles.Data.Interfaces.v1;
 using AutoMapper;
 using Business.Interfaces.v1;
-using Persistence.Entities.v1;
 using Persistence.Interfaces.v1;
 using Business.Models.v1.Vehicles;
 using Microsoft.Extensions.Logging;
@@ -9,6 +8,7 @@ using Business.Models.v1.Errors;
 using System.Net;
 
 using static Business.Constants;
+using Persistence.Entities.v1.Vehicles;
 
 namespace Business.Implementations.v1
 {

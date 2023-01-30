@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Persistence.Entities.v1;
-
+using Persistence.Entities.v1.Insurances;
+using Persistence.Entities.v1.Towns;
+using Persistence.Entities.v1.Users;
+using Persistence.Entities.v1.Vehicles;
 
 namespace Persistence.Context.v1
 {

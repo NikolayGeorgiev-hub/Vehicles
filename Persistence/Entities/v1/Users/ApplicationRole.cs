@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Persistence.Entities.v1
+namespace Persistence.Entities.v1.Users
 {
     public class ApplicationRole : IdentityRole<Guid>
     {
@@ -8,11 +8,9 @@ namespace Persistence.Entities.v1
         {
         }
 
-        public ApplicationRole(string roleName) 
+        public ApplicationRole(string roleName)
             : base(roleName)
         {
         }
-
-        public ICollection<ApplicationUser> Users { get; set; }
     }
 }

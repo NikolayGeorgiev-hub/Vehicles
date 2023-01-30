@@ -1,4 +1,4 @@
-﻿namespace Persistence.Entities.v1
+﻿namespace Persistence.Entities.v1.Insurances
 {
     public class InsurancePolicy
     {

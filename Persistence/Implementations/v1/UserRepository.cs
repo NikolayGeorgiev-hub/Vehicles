@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context.v1;
-using Persistence.Entities.v1;
+using Persistence.Entities.v1.Users;
 using Persistence.Interfaces.v1;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

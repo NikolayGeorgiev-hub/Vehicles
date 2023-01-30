@@ -12,7 +12,7 @@ namespace Business.Models.v1.Users
         [Required(ErrorMessage = RequiredErrorMessage)]
         public string Email { get; set; }
 
-        [Display(Name = "Pasword")]
+        [Display(Name = "Password")]
         [PasswordPropertyText]
         [StringLength(maximumLength: 50, ErrorMessage = RangeErrorMessage, MinimumLength = 5)]
         [Required(ErrorMessage = RequiredErrorMessage)]

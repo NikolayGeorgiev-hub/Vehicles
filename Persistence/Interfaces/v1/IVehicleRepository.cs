@@ -1,4 +1,4 @@
-﻿using Persistence.Entities.v1;
+﻿using Persistence.Entities.v1.Vehicles;
 
 namespace Vehicles.Data.Interfaces.v1
 {
