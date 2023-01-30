@@ -1,12 +1,38 @@
 ﻿using Business.Interfaces.v1;
+using Microsoft.Extensions.Logging;
 using Persistence.Entities.v1;
+using Persistence.Interfaces.v1;
+using Vehicles.Data.Interfaces.v1;
+
+using static Business.Constants;
 
 namespace Business.Implementations.v1
 {
     public class InsuranceService : IInsuaranceService
     {
-        public InsurancePolicy Create(Vehicle vehicle)
+        private readonly ILogger<InsuranceService> _logger;
+        private readonly IVehicleRepository _vehicleRepository;
+        private readonly IInsuaranceRepository _insuaranceRepository;
+
+        public InsuranceService(
+            ILogger<InsuranceService> logger,
+            IVehicleRepository vehicleRepository, IInsuaranceRepository insuaranceRepository)
         {
+            _logger = logger;
+            _vehicleRepository = vehicleRepository;
+            _insuaranceRepository = insuaranceRepository;
+        }
+
+        public async Task<InsurancePolicy> CreateAsync(Guid id)
+        {
+            var vehicle = await _vehicleRepository.GetByIdAsync(id);
+
+            if (vehicle is null)
+            {
+                _logger.Log(LogLevel.Information, string.Format(VehicleMessages.NotFound, id));
+                throw new ArgumentNullException(string.Format(VehicleMessages.NotFound, id));
+            }
+
             var engineCategory = this.CreateEngineCategory(vehicle.EngineCapacity, vehicle.VehicleType);
 
             var insuarance = new InsurancePolicy
@@ -20,12 +46,15 @@ namespace Business.Implementations.v1
                 Purpose = vehicle.Purpose.ToString(),
                 EngineType = engineCategory.Description,
                 EngineGroup = engineCategory.Group,
-                OwnerAge = 55,
-                OwnerGroup = this.CreateOwnerCategory(55).OwnerGroup
-
+                OwnerAge = 30,
+                OwnerGroup = this.CreateOwnerCategory(30).OwnerGroup
             };
 
-           return insuarance;
+            await _insuaranceRepository.AddAsync(insuarance);
+            await _insuaranceRepository.SaveAsync();
+
+            _logger.Log(LogLevel.Information, string.Format(VehicleMessages.SuccessfulCreate, insuarance.Number));
+            return insuarance;
 
 
         }

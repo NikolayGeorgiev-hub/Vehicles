@@ -11,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Vehicles.Web;
+using Microsoft.AspNetCore.HttpsPolicy;
 
 public class Program
 {
@@ -91,6 +93,7 @@ public class Program
         services.AddScoped<IVehicleRepository, VehicleRepository>();
         services.AddScoped<ITownRepository, TownRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IInsuaranceRepository, InsuaranceRepository>();
 
         services.AddScoped<IVehicleService, VehicleService>();
         services.AddScoped<ITownService, TownService>();
@@ -105,11 +108,9 @@ public class Program
         {
             app.UseDeveloperExceptionPage();
         }
-
+       
         app.UseHttpsRedirection();
-
         app.UseRouting();
-
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
@@ -117,13 +118,11 @@ public class Program
             endpoints.MapControllers();
         });
         app.UseAuthentication();
-
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
 
         });
-
     }
 }

@@ -22,7 +22,7 @@
             public const string SuccessfulRegistration = "Successful registration Email: {0}";
             public const string SuccessfulSetToRole = "Successful add permissions to Role: {0} Email: {1}";
             public const string SuccessfulAddRole = "Successful add new role: {0}";
-            public const string AlreadyTakenEmail = "Email '{0}' is alreadt taken";
+            public const string AlreadyTakenEmail = "Email '{0}' is already taken";
 
             public const string Login = "{0} login";
             public const string Logount = "User: {0} logout";
@@ -34,7 +34,7 @@
             public const string NotFoundRole = "Not found role with this name: {0}";
             public const string NotFoundUser = "Not found user with this: {0} ID";
             public const string AlreadyLogged = "User: {0} already logged in";
-            public const string FailedLogin = "Wrong username or password";
+            public const string FailedLogin = "Wrong user name or password";
         }
 
 
@@ -42,7 +42,7 @@
         {
             public const string SuccessfulAddNewVehicle = "Successful add new vehicle Type: {0}";
             public const string NotFound = "Not found {0} ";
-            public const string ForbiddenAction = "Forbidden {0}, difernet user";
+            public const string ForbiddenAction = "Forbidden {0}, different user";
 
 
             public const string SuccessfulRemove = "Successful remove";
@@ -52,7 +52,8 @@
         public class VehicleMessages
         {
             public const string NotFound = "Not found vehicle with this ID: {0}";
-            public const string Forbidden = "You cannot change the data of someone elses vehicle";
+            public const string Forbidden = "You cannot change the data of someone else vehicle";
+            public const string SuccessfulCreate = "";
         }
     }
 }
